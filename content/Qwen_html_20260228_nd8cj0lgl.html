@@ -1,0 +1,923 @@
+<div class="content-section active">
+    <!-- Header -->
+    <div class="dash-header">
+        <div>
+            <h1 class="dash-greeting">Welcome Back</h1>
+            <p class="dash-date" id="currentDate">Loading...</p>
+        </div>
+        <div class="user-stats-mini">
+            <div class="stat-pill">
+                <span class="stat-icon">🏆</span>
+                <span id="totalPoints">0</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-icon">🔥</span>
+                <span id="streakDays">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+        
+        <!-- Card 1: Session Timer -->
+        <div class="dash-card card-medium">
+            <div class="card-header">
+                <h3>Learning Session</h3>
+                <span class="status-badge active" id="timerStatus">Live</span>
+            </div>
+            <div class="timer-box">
+                <div class="time-display" id="sessionTimer">00:00:00</div>
+                <div class="timer-info">
+                    <span>Today: <strong id="todayTime">0m</strong></span>
+                    <span>This Week: <strong id="weekTime">0m</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Quick Stats -->
+        <div class="dash-card card-medium">
+            <div class="card-header">
+                <h3>Your Progress</h3>
+            </div>
+            <div class="stats-grid">
+                <div class="mini-stat">
+                    <div class="mini-stat-value" id="completedLessons">0</div>
+                    <div class="mini-stat-label">Lessons</div>
+                </div>
+                <div class="mini-stat">
+                    <div class="mini-stat-value" id="completedQuizzes">0</div>
+                    <div class="mini-stat-label">Quizzes</div>
+                </div>
+                <div class="mini-stat">
+                    <div class="mini-stat-value" id="avgRating">0%</div>
+                    <div class="mini-stat-label">Avg Score</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Recent Quizzes with Ratings -->
+        <div class="dash-card card-tall">
+            <div class="card-header">
+                <h3>Recent Quizzes</h3>
+                <button class="btn-small" onclick="showAllQuizzes()">View All</button>
+            </div>
+            <div class="quiz-list" id="quizList">
+                <!-- Quizzes will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Card 4: Recent Activity -->
+        <div class="dash-card card-wide">
+            <div class="card-header">
+                <h3>Recent Activity</h3>
+                <button class="btn-text" onclick="clearActivity()">Clear</button>
+            </div>
+            <div class="activity-list" id="activityList">
+                <!-- Activities will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Card 5: Weekly Activity -->
+        <div class="dash-card card-medium">
+            <div class="card-header">
+                <h3>This Week</h3>
+            </div>
+            <div class="weekly-chart" id="weeklyChart">
+                <!-- Chart bars will be generated here -->
+            </div>
+            <div class="chart-total">
+                Total: <strong id="weekTotalMinutes">0</strong> minutes
+            </div>
+        </div>
+
+        <!-- Card 6: Daily Goals -->
+        <div class="dash-card card-medium">
+            <div class="card-header">
+                <h3>Daily Goals</h3>
+                <span id="goalsCompleted">0/4</span>
+            </div>
+            <div class="goals-list">
+                <div class="goal-item" onclick="toggleGoal('watch')">
+                    <div class="goal-checkbox" id="goal-watch"></div>
+                    <span>Watch a video</span>
+                </div>
+                <div class="goal-item" onclick="toggleGoal('read')">
+                    <div class="goal-checkbox" id="goal-read"></div>
+                    <span>Read an article</span>
+                </div>
+                <div class="goal-item" onclick="toggleGoal('quiz')">
+                    <div class="goal-checkbox" id="goal-quiz"></div>
+                    <span>Complete a quiz</span>
+                </div>
+                <div class="goal-item" onclick="toggleGoal('time')">
+                    <div class="goal-checkbox" id="goal-time"></div>
+                    <span>Study 15 min</span>
+                </div>
+            </div>
+            <div class="goal-progress">
+                <div class="goal-bar" id="goalBar" style="width: 0%"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ===== SIMPLE DATA STORAGE =====
+const DB = {
+    get() {
+        const data = localStorage.getItem('dc_dashboard');
+        return data ? JSON.parse(data) : this.default();
+    },
+    
+    save(data) {
+        localStorage.setItem('dc_dashboard', JSON.stringify(data));
+    },
+    
+    default() {
+        return {
+            points: 0,
+            streak: 0,
+            lastVisit: null,
+            sessionStart: null,
+            sessionSeconds: 0,
+            todayMinutes: 0,
+            weekMinutes: [0,0,0,0,0,0,0], // Mon-Sun
+            lessons: 0,
+            quizzes: [], // {name, score, date}
+            activities: [], // {type, title, time}
+            goals: {watch: false, read: false, quiz: false, time: false},
+            goalsDate: null
+        };
+    }
+};
+
+// ===== TIMER =====
+let timerInterval;
+
+function startTimer() {
+    const data = DB.get();
+    data.sessionStart = Date.now();
+    DB.save(data);
+    
+    timerInterval = setInterval(() => {
+        data.sessionSeconds++;
+        
+        // Check 15 min goal
+        if (data.sessionSeconds >= 900 && !data.goals.time) {
+            completeGoal('time', true);
+        }
+        
+        updateTimerUI(data.sessionSeconds);
+        DB.save(data);
+    }, 1000);
+}
+
+function updateTimerUI(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    document.getElementById('sessionTimer').textContent = 
+        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    const data = DB.get();
+    
+    if (data.sessionSeconds > 0) {
+        const minutes = Math.floor(data.sessionSeconds / 60);
+        data.todayMinutes += minutes;
+        
+        // Update week
+        const day = new Date().getDay();
+        const idx = day === 0 ? 6 : day - 1;
+        data.weekMinutes[idx] += minutes;
+        
+        // Add points
+        data.points += minutes;
+        
+        // Log activity
+        if (minutes >= 1) {
+            addActivity('time', `Study Session`, `${minutes} minutes`);
+        }
+        
+        data.sessionSeconds = 0;
+        DB.save(data);
+        updateAll();
+    }
+}
+
+// ===== QUIZZES =====
+function addQuiz(name, score) {
+    const data = DB.get();
+    data.quizzes.unshift({name, score, date: new Date().toISOString()});
+    if (data.quizzes.length > 10) data.quizzes.pop();
+    
+    // Add points based on score
+    const points = Math.floor(score / 10);
+    data.points += points;
+    
+    // Complete quiz goal
+    completeGoal('quiz', true);
+    
+    // Log activity
+    addActivity('quiz', name, `Score: ${score}%`);
+    
+    DB.save(data);
+    updateAll();
+    showNotification(`Quiz completed! +${points} points`);
+}
+
+function renderQuizzes() {
+    const data = DB.get();
+    const list = document.getElementById('quizList');
+    
+    if (data.quizzes.length === 0) {
+        list.innerHTML = '<div class="empty-state">No quizzes yet. Start learning!</div>';
+        return;
+    }
+    
+    list.innerHTML = data.quizzes.slice(0, 5).map(q => {
+        const rating = getRating(q.score);
+        return `
+            <div class="quiz-item">
+                <div class="quiz-info">
+                    <div class="quiz-name">${q.name}</div>
+                    <div class="quiz-date">${timeAgo(q.date)}</div>
+                </div>
+                <div class="quiz-score ${rating.class}">
+                    <div class="score-value">${q.score}%</div>
+                    <div class="score-stars">${rating.stars}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function getRating(score) {
+    if (score >= 90) return {class: 'excellent', stars: '★★★★★'};
+    if (score >= 80) return {class: 'good', stars: '★★★★☆'};
+    if (score >= 70) return {class: 'average', stars: '★★★☆☆'};
+    if (score >= 60) return {class: 'pass', stars: '★★☆☆☆'};
+    return {class: 'fail', stars: '★☆☆☆☆'};
+}
+
+// ===== ACTIVITY =====
+function addActivity(type, title, detail) {
+    const data = DB.get();
+    data.activities.unshift({type, title, detail, time: Date.now()});
+    if (data.activities.length > 20) data.activities.pop();
+    DB.save(data);
+}
+
+function renderActivity() {
+    const data = DB.get();
+    const list = document.getElementById('activityList');
+    
+    if (data.activities.length === 0) {
+        list.innerHTML = '<div class="empty-state">No recent activity</div>';
+        return;
+    }
+    
+    const icons = {
+        time: '⏱️',
+        quiz: '📝',
+        lesson: '📚',
+        goal: '✓'
+    };
+    
+    list.innerHTML = data.activities.slice(0, 8).map(a => `
+        <div class="activity-item">
+            <span class="activity-icon">${icons[a.type] || '•'}</span>
+            <div class="activity-content">
+                <div class="activity-title">${a.title}</div>
+                <div class="activity-detail">${a.detail}</div>
+            </div>
+            <span class="activity-time">${timeAgo(a.time)}</span>
+        </div>
+    `).join('');
+}
+
+function clearActivity() {
+    if (confirm('Clear activity history?')) {
+        const data = DB.get();
+        data.activities = [];
+        DB.save(data);
+        renderActivity();
+    }
+}
+
+// ===== GOALS =====
+function toggleGoal(goal, auto = false) {
+    const data = DB.get();
+    
+    // Reset goals if new day
+    const today = new Date().toDateString();
+    if (data.goalsDate !== today) {
+        data.goals = {watch: false, read: false, quiz: false, time: false};
+        data.goalsDate = today;
+    }
+    
+    if (data.goals[goal]) return;
+    
+    data.goals[goal] = true;
+    
+    if (!auto) {
+        data.points += 25;
+        addActivity('goal', `Goal: ${goal}`, '+25 points');
+    }
+    
+    DB.save(data);
+    updateGoals();
+    updatePoints();
+}
+
+function completeGoal(goal, auto) {
+    toggleGoal(goal, auto);
+}
+
+function updateGoals() {
+    const data = DB.get();
+    
+    // Reset if new day
+    const today = new Date().toDateString();
+    if (data.goalsDate !== today) {
+        data.goals = {watch: false, read: false, quiz: false, time: false};
+        data.goalsDate = today;
+        DB.save(data);
+    }
+    
+    // Update checkboxes
+    Object.keys(data.goals).forEach(key => {
+        const el = document.getElementById(`goal-${key}`);
+        if (el) {
+            el.classList.toggle('done', data.goals[key]);
+        }
+    });
+    
+    // Update progress
+    const completed = Object.values(data.goals).filter(v => v).length;
+    document.getElementById('goalsCompleted').textContent = `${completed}/4`;
+    document.getElementById('goalBar').style.width = `${(completed/4)*100}%`;
+}
+
+// ===== WEEKLY CHART =====
+function renderChart() {
+    const data = DB.get();
+    const chart = document.getElementById('weeklyChart');
+    const max = Math.max(...data.weekMinutes, 30);
+    
+    const days = ['M','T','W','T','F','S','S'];
+    const today = new Date().getDay();
+    
+    chart.innerHTML = data.weekMinutes.map((min, i) => {
+        const height = (min / max) * 100;
+        const isToday = (today === 0 && i === 6) || (today - 1 === i);
+        return `
+            <div class="chart-bar-wrapper">
+                <div class="chart-bar ${isToday ? 'today' : ''}" style="height: ${Math.max(height, 5)}%"></div>
+                <div class="chart-label">${days[i]}</div>
+                <div class="chart-value">${min}m</div>
+            </div>
+        `;
+    }).join('');
+    
+    const total = data.weekMinutes.reduce((a,b) => a+b, 0);
+    document.getElementById('weekTotalMinutes').textContent = total;
+}
+
+// ===== UTILS =====
+function timeAgo(timestamp) {
+    if (typeof timestamp === 'string') timestamp = new Date(timestamp).getTime();
+    const seconds = Math.floor((Date.now() - timestamp) / 1000);
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds/60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds/3600)}h ago`;
+    return `${Math.floor(seconds/86400)}d ago`;
+}
+
+function updatePoints() {
+    const data = DB.get();
+    document.getElementById('totalPoints').textContent = data.points;
+}
+
+function updateStats() {
+    const data = DB.get();
+    document.getElementById('todayTime').textContent = `${data.todayMinutes}m`;
+    
+    const weekTotal = data.weekMinutes.reduce((a,b) => a+b, 0);
+    document.getElementById('weekTime').textContent = `${weekTotal}m`;
+    
+    document.getElementById('completedLessons').textContent = data.lessons;
+    document.getElementById('completedQuizzes').textContent = data.quizzes.length;
+    
+    // Average score
+    if (data.quizzes.length > 0) {
+        const avg = Math.floor(data.quizzes.reduce((a,q) => a + q.score, 0) / data.quizzes.length);
+        document.getElementById('avgRating').textContent = `${avg}%`;
+    }
+    
+    // Streak
+    updateStreak();
+}
+
+function updateStreak() {
+    const data = DB.get();
+    const today = new Date().toDateString();
+    const last = data.lastVisit ? new Date(data.lastVisit).toDateString() : null;
+    
+    if (last !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (last === yesterday.toDateString()) {
+            data.streak++;
+        } else if (last !== today) {
+            data.streak = 1;
+        }
+        
+        data.lastVisit = new Date().toISOString();
+        DB.save(data);
+    }
+    
+    document.getElementById('streakDays').textContent = data.streak;
+}
+
+function updateAll() {
+    updatePoints();
+    updateStats();
+    updateGoals();
+    renderQuizzes();
+    renderActivity();
+    renderChart();
+}
+
+function showNotification(msg) {
+    const notif = document.getElementById('notification');
+    if (notif) {
+        document.getElementById('notification-text').textContent = msg;
+        notif.classList.add('show');
+        setTimeout(() => notif.classList.remove('show'), 3000);
+    }
+}
+
+function showAllQuizzes() {
+    const data = DB.get();
+    if (data.quizzes.length === 0) {
+        showNotification('No quizzes completed yet');
+        return;
+    }
+    const list = data.quizzes.map((q,i) => `${i+1}. ${q.name}: ${q.score}%`).join('\n');
+    alert(`All Quizzes:\n\n${list}`);
+}
+
+// ===== TEST FUNCTIONS =====
+window.testQuiz = function() {
+    const names = ['Privacy Basics', 'Password Security', 'Digital Footprint', 'Cyber Safety'];
+    const name = names[Math.floor(Math.random() * names.length)];
+    const score = Math.floor(Math.random() * 40) + 60; // 60-100
+    addQuiz(name, score);
+};
+
+window.testLesson = function() {
+    const data = DB.get();
+    data.lessons++;
+    data.points += 50;
+    addActivity('lesson', 'Completed Lesson', 'Digital Citizenship 101');
+    completeGoal('watch', true);
+    DB.save(data);
+    updateAll();
+    showNotification('Lesson completed! +50 points');
+};
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Date
+    document.getElementById('currentDate').textContent = 
+        new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'});
+    
+    // Start
+    updateAll();
+    startTimer();
+    
+    // Save on close
+    window.addEventListener('beforeunload', stopTimer);
+    
+    // Welcome message
+    const data = DB.get();
+    if (data.points === 0 && data.activities.length === 0) {
+        addActivity('goal', 'Welcome!', 'Start your journey');
+        setTimeout(() => showNotification('Welcome! Start learning to earn points'), 1000);
+    }
+});
+</script>
+
+<style>
+/* Dashboard Layout */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dash-greeting {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+.dash-date {
+    color: #667eea;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.user-stats-mini {
+    display: flex;
+    gap: 12px;
+}
+
+.stat-pill {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.stat-icon {
+    font-size: 1.1rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.dash-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.card-medium { grid-column: span 1; }
+.card-tall { grid-column: span 1; grid-row: span 2; }
+.card-wide { grid-column: span 2; }
+
+/* Timer */
+.timer-box {
+    text-align: center;
+    padding: 20px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.time-display {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #667eea;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 12px;
+}
+
+.timer-info {
+    display: flex;
+    justify-content: space-around;
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: rgba(67, 233, 123, 0.2);
+    color: #43e97b;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    text-align: center;
+}
+
+.mini-stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 4px;
+}
+
+.mini-stat-label {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Quiz List */
+.quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.quiz-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.quiz-name {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.quiz-date {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.quiz-score {
+    text-align: right;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+}
+
+.quiz-score.excellent { color: #43e97b; }
+.quiz-score.good { color: #4facfe; }
+.quiz-score.average { color: #fee140; }
+.quiz-score.pass { color: #fa709a; }
+.quiz-score.fail { color: #f5576c; }
+
+.score-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-stars {
+    font-size: 0.7rem;
+    margin-top: 4px;
+    letter-spacing: 2px;
+}
+
+/* Activity List */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+}
+
+.activity-icon {
+    font-size: 1.2rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(102, 126, 234, 0.2);
+    border-radius: 6px;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.activity-detail {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.activity-time {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+/* Chart */
+.weekly-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 120px;
+    gap: 8px;
+    padding: 10px 0;
+}
+
+.chart-bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.chart-bar {
+    width: 100%;
+    background: #2a2a2a;
+    border-radius: 4px;
+    transition: all 0.3s;
+    min-height: 5%;
+}
+
+.chart-bar.today {
+    background: linear-gradient(to top, #667eea, #764ba2);
+}
+
+.chart-bar:hover {
+    filter: brightness(1.3);
+}
+
+.chart-label {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.chart-value {
+    font-size: 0.7rem;
+    color: #888;
+}
+
+.chart-total {
+    text-align: center;
+    margin-top: 12px;
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+/* Goals */
+.goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.goal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.goal-item:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+.goal-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #3a3a3a;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.goal-checkbox.done {
+    background: #43e97b;
+    border-color: #43e97b;
+}
+
+.goal-checkbox.done::after {
+    content: '✓';
+    color: #1a1a1a;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.goal-progress {
+    height: 6px;
+    background: #2a2a2a;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.goal-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #43e97b);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Buttons */
+.btn-small {
+    background: #2a2a2a;
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-small:hover {
+    background: #3a3a3a;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: #667eea;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btn-text:hover {
+    text-decoration: underline;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    color: #666;
+    padding: 30px;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .card-wide { grid-column: span 2; }
+    .card-tall { grid-row: span 1; }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .card-medium, .card-wide, .card-tall {
+        grid-column: span 1;
+    }
+    .dash-greeting {
+        font-size: 1.5rem;
+    }
+}
+</style>
