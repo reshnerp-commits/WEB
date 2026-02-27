@@ -1,0 +1,635 @@
+<div class="content-section active">
+    <!-- Header -->
+    <div class="dash-header">
+        <div>
+            <h1 class="dash-greeting">Hello, Citizen</h1>
+            <p class="dash-date" id="currentDate">Loading date...</p>
+        </div>
+        <div class="user-profile-mini">
+            <div class="avatar">DC</div>
+            <span>Level 5</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+        
+        <!-- Card 1: Weekly Activity (Bar Chart) -->
+        <div class="dash-card card-large">
+            <div class="card-header">
+                <h3>Learning Activity</h3>
+                <span class="badge">This Week</span>
+            </div>
+            <div class="chart-container">
+                <div class="bar-group">
+                    <div class="bar" style="height: 40%;" title="Mon"></div>
+                    <div class="bar" style="height: 70%;" title="Tue"></div>
+                    <div class="bar active" style="height: 100%;" title="Wed"></div>
+                    <div class="bar" style="height: 30%;" title="Thu"></div>
+                    <div class="bar" style="height: 50%;" title="Fri"></div>
+                    <div class="bar" style="height: 20%;" title="Sat"></div>
+                    <div class="bar" style="height: 10%;" title="Sun"></div>
+                </div>
+                <div class="chart-labels">
+                    <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+                </div>
+            </div>
+            <div class="stat-big">12h <span class="stat-sub">Total Time</span></div>
+        </div>
+
+        <!-- Card 2: Streak Ring -->
+        <div class="dash-card card-square">
+            <div class="card-header">
+                <h3>Day Streak</h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.5-3.3a1 1 0 0 0 .5 1.8z"></path>
+                </svg>
+            </div>
+            <div class="ring-container">
+                <svg class="ring-svg" viewBox="0 0 100 100">
+                    <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                    <circle class="ring-fill" cx="50" cy="50" r="40" stroke-dasharray="251" stroke-dashoffset="60"></circle>
+                </svg>
+                <div class="ring-text">
+                    <span class="ring-number">5</span>
+                    <span class="ring-label">Days</span>
+                </div>
+            </div>
+            <p class="card-footer">Keep it up! 🔥</p>
+        </div>
+
+        <!-- Card 3: Daily Goals (Checklist) -->
+        <div class="dash-card card-tall">
+            <div class="card-header">
+                <h3>Daily Goals</h3>
+                <button class="icon-btn" onclick="toggleAllGoals()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+            </div>
+            <ul class="goal-list">
+                <li class="goal-item completed">
+                    <div class="goal-check" onclick="toggleGoal(this)">✓</div>
+                    <div class="goal-info">
+                        <span class="goal-title">Watch 1 Video</span>
+                        <span class="goal-sub">Privacy Basics</span>
+                    </div>
+                </li>
+                <li class="goal-item completed">
+                    <div class="goal-check" onclick="toggleGoal(this)">✓</div>
+                    <div class="goal-info">
+                        <span class="goal-title">Read 1 Article</span>
+                        <span class="goal-sub">Cyber Safety</span>
+                    </div>
+                </li>
+                <li class="goal-item">
+                    <div class="goal-check" onclick="toggleGoal(this)"></div>
+                    <div class="goal-info">
+                        <span class="goal-title">Take a Quiz</span>
+                        <span class="goal-sub">Score > 80%</span>
+                    </div>
+                </li>
+                <li class="goal-item">
+                    <div class="goal-check" onclick="toggleGoal(this)"></div>
+                    <div class="goal-info">
+                        <span class="goal-title">Share Tip</span>
+                        <span class="goal-sub">Post on social</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 50%"></div>
+            </div>
+            <div class="progress-text">50% Completed</div>
+        </div>
+
+        <!-- Card 4: Recent Activity Feed -->
+        <div class="dash-card card-wide">
+            <div class="card-header">
+                <h3>Recent Activity</h3>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            <div class="activity-feed">
+                <div class="activity-item">
+                    <div class="activity-icon blue">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    </div>
+                    <div class="activity-details">
+                        <p class="activity-title">Completed Lesson</p>
+                        <p class="activity-sub">Digital Footprint Module</p>
+                    </div>
+                    <span class="activity-time">2h ago</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon purple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <div class="activity-details">
+                        <p class="activity-title">Quiz Passed</p>
+                        <p class="activity-sub">Password Security (95%)</p>
+                    </div>
+                    <span class="activity-time">5h ago</span>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon green">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></svg>
+                    </div>
+                    <div class="activity-details">
+                        <p class="activity-title">New Badge Earned</p>
+                        <p class="activity-sub">Privacy Protector</p>
+                    </div>
+                    <span class="activity-time">1d ago</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: Total Score / Points -->
+        <div class="dash-card card-square gradient-card">
+            <div class="card-header">
+                <h3>Total Score</h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            </div>
+            <div class="score-display">
+                <span class="score-number">2,450</span>
+                <span class="score-label">Citizen Points</span>
+            </div>
+            <div class="score-trend">
+                <span>+150 this week</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Set Date
+const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+// Goal Toggle Logic
+function toggleGoal(element) {
+    const li = element.parentElement;
+    li.classList.toggle('completed');
+    updateProgress();
+}
+
+function toggleAllGoals() {
+    const goals = document.querySelectorAll('.goal-item');
+    const allComplete = Array.from(goals).every(g => g.classList.contains('completed'));
+    
+    goals.forEach(g => {
+        if (allComplete) g.classList.remove('completed');
+        else g.classList.add('completed');
+    });
+    updateProgress();
+}
+
+function updateProgress() {
+    const total = document.querySelectorAll('.goal-item').length;
+    const completed = document.querySelectorAll('.goal-item.completed').length;
+    const percentage = (completed / total) * 100;
+    
+    document.querySelector('.progress-bar').style.width = percentage + '%';
+    document.querySelector('.progress-text').textContent = Math.round(percentage) + '% Completed';
+}
+</script>
+
+<style>
+/* Dashboard Specific Styles */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.dash-greeting {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(to right, #fff, #a0a0a0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dash-date {
+    color: #667eea;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+.user-profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #1a1a1a;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1px solid #2a2a2a;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: white;
+}
+
+/* Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 24px;
+}
+
+.dash-card {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 24px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.dash-card:hover {
+    border-color: #3a3a3a;
+    transform: translateY(-2px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.badge {
+    background: #2a2a2a;
+    color: #a0a0a0;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: #a0a0a0;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.icon-btn:hover {
+    background: #2a2a2a;
+    color: white;
+}
+
+/* Grid Spans */
+.card-large { grid-column: span 2; grid-row: span 1; }
+.card-square { grid-column: span 1; grid-row: span 1; }
+.card-tall { grid-column: span 1; grid-row: span 2; }
+.card-wide { grid-column: span 3; grid-row: span 1; }
+
+/* Chart Styles */
+.chart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 120px;
+    margin-bottom: 10px;
+}
+
+.bar-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    gap: 8px;
+}
+
+.bar {
+    flex: 1;
+    background: #2a2a2a;
+    border-radius: 4px;
+    transition: height 0.5s ease, background 0.3s;
+    position: relative;
+}
+
+.bar.active {
+    background: linear-gradient(to top, #667eea, #764ba2);
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.4);
+}
+
+.bar:hover {
+    background: #3a3a3a;
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #666;
+    font-size: 0.75rem;
+    margin-top: 8px;
+}
+
+.stat-big {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+}
+
+.stat-sub {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+/* Ring Styles */
+.ring-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 20px auto;
+}
+
+.ring-svg {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.ring-bg {
+    fill: none;
+    stroke: #2a2a2a;
+    stroke-width: 8;
+}
+
+.ring-fill {
+    fill: none;
+    stroke: #ccff00; /* Lime Green Accent */
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s ease;
+}
+
+.ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.ring-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.ring-label {
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-footer {
+    text-align: center;
+    color: #ccff00;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* Goal List Styles */
+.goal-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.goal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.goal-item:last-child {
+    border-bottom: none;
+}
+
+.goal-check {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #3a3a3a;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.goal-item.completed .goal-check {
+    background: #ccff00;
+    border-color: #ccff00;
+}
+
+.goal-info {
+    flex: 1;
+}
+
+.goal-title {
+    display: block;
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.goal-item.completed .goal-title {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.goal-sub {
+    display: block;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.progress-container {
+    height: 6px;
+    background: #2a2a2a;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #ccff00);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #a0a0a0;
+    margin-top: 8px;
+}
+
+/* Activity Feed Styles */
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    transition: background 0.3s;
+}
+
+.activity-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activity-icon.blue { background: rgba(79, 172, 254, 0.2); color: #4facfe; }
+.activity-icon.purple { background: rgba(118, 75, 162, 0.2); color: #764ba2; }
+.activity-icon.green { background: rgba(67, 233, 123, 0.2); color: #43e97b; }
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-title {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0 0 4px 0;
+}
+
+.activity-sub {
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.activity-time {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.view-all {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Gradient Card */
+.gradient-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.score-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.score-number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+}
+
+.score-label {
+    color: rgba(255,255,255,0.8);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.score-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    align-self: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .card-wide { grid-column: span 2; }
+    .card-tall { grid-row: span 1; }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .card-large, .card-square, .card-tall, .card-wide {
+        grid-column: span 1;
+        grid-row: auto;
+    }
+    .dash-greeting { font-size: 2rem; }
+}
+</style>
