@@ -1,0 +1,732 @@
+<div class="content-section active">
+    <!-- Header -->
+    <div class="dash-header">
+        <div>
+            <h1 class="dash-greeting">Hello, Citizen</h1>
+            <p class="dash-date" id="currentDate">Loading date...</p>
+        </div>
+        <div class="user-profile-mini">
+            <div class="avatar" id="userAvatar">DC</div>
+            <span id="userLevel">Level 1</span>
+        </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+        
+        <!-- Card 1: Session Time Tracker -->
+        <div class="dash-card card-large">
+            <div class="card-header">
+                <h3>Session Time</h3>
+                <span class="badge" id="sessionStatus">Active</span>
+            </div>
+            <div class="timer-display">
+                <div class="time-unit">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-unit">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-unit">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+            <div class="session-stats">
+                <div class="session-stat">
+                    <span class="stat-label">Today's Total</span>
+                    <span class="stat-value" id="todayTotal">0h 0m</span>
+                </div>
+                <div class="session-stat">
+                    <span class="stat-label">This Week</span>
+                    <span class="stat-value" id="weekTotal">0h 0m</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Streak Ring -->
+        <div class="dash-card card-square">
+            <div class="card-header">
+                <h3>Day Streak</h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccff00" stroke-width="2">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.1.2-2.2.5-3.3a1 1 0 0 0 .5 1.8z"></path>
+                </svg>
+            </div>
+            <div class="ring-container">
+                <svg class="ring-svg" viewBox="0 0 100 100">
+                    <circle class="ring-bg" cx="50" cy="50" r="40"></circle>
+                    <circle class="ring-fill" id="streakRing" cx="50" cy="50" r="40" stroke-dasharray="251" stroke-dashoffset="251"></circle>
+                </svg>
+                <div class="ring-text">
+                    <span class="ring-number" id="streakCount">0</span>
+                    <span class="ring-label">Days</span>
+                </div>
+            </div>
+            <p class="card-footer" id="streakMessage">Start learning!</p>
+        </div>
+
+        <!-- Card 3: Daily Goals (Functional) -->
+        <div class="dash-card card-tall">
+            <div class="card-header">
+                <h3>Daily Goals</h3>
+                <button class="icon-btn" onclick="resetDailyGoals()" title="Reset Goals">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                </button>
+            </div>
+            <ul class="goal-list" id="goalList">
+                <li class="goal-item" data-goal="watch-video">
+                    <div class="goal-check" onclick="toggleGoal('watch-video')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="goal-info">
+                        <span class="goal-title">Watch 1 Video</span>
+                        <span class="goal-sub">Complete a lesson video</span>
+                    </div>
+                </li>
+                <li class="goal-item" data-goal="read-article">
+                    <div class="goal-check" onclick="toggleGoal('read-article')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="goal-info">
+                        <span class="goal-title">Read 1 Article</span>
+                        <span class="goal-sub">Learn something new</span>
+                    </div>
+                </li>
+                <li class="goal-item" data-goal="take-quiz">
+                    <div class="goal-check" onclick="toggleGoal('take-quiz')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="goal-info">
+                        <span class="goal-title">Take a Quiz</span>
+                        <span class="goal-sub">Score > 80%</span>
+                    </div>
+                </li>
+                <li class="goal-item" data-goal="spend-time">
+                    <div class="goal-check" onclick="toggleGoal('spend-time')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="goal-info">
+                        <span class="goal-title">Spend 15 Min</span>
+                        <span class="goal-sub">Learning time</span>
+                    </div>
+                </li>
+            </ul>
+            <div class="progress-container">
+                <div class="progress-bar" id="goalProgressBar" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="goalProgressText">0% Completed</div>
+        </div>
+
+        <!-- Card 4: Recent Activity Feed (Functional) -->
+        <div class="dash-card card-wide">
+            <div class="card-header">
+                <h3>Recent Activity</h3>
+                <button class="icon-btn" onclick="clearActivityFeed()" title="Clear History">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </button>
+            </div>
+            <div class="activity-feed" id="activityFeed">
+                <!-- Activities will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Card 5: Total Score (Functional) -->
+        <div class="dash-card card-square gradient-card">
+            <div class="card-header">
+                <h3>Total Score</h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+            </div>
+            <div class="score-display">
+                <span class="score-number" id="totalScore">0</span>
+                <span class="score-label">Citizen Points</span>
+            </div>
+            <div class="score-trend" id="scoreTrend">
+                <span>+0 this week</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </div>
+        </div>
+
+        <!-- Card 6: Weekly Activity Chart -->
+        <div class="dash-card card-large">
+            <div class="card-header">
+                <h3>Weekly Activity</h3>
+                <span class="badge" id="weekLabel">This Week</span>
+            </div>
+            <div class="chart-container">
+                <div class="bar-group" id="activityChart">
+                    <!-- Bars will be generated by JS -->
+                </div>
+                <div class="chart-labels">
+                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+            </div>
+            <div class="stat-big"><span id="weekMinutes">0</span> <span class="stat-sub">minutes this week</span></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ===== USER DATA MANAGEMENT =====
+const UserData = {
+    get() {
+        const data = localStorage.getItem('digitalCitizenshipData');
+        return data ? JSON.parse(data) : this.getDefault();
+    },
+    
+    save(data) {
+        localStorage.setItem('digitalCitizenshipData', JSON.stringify(data));
+    },
+    
+    getDefault() {
+        return {
+            totalScore: 0,
+            sessionTime: 0, // in seconds
+            todayTime: 0,
+            weekTime: 0,
+            streak: 0,
+            lastActive: null,
+            goals: {
+                'watch-video': false,
+                'read-article': false,
+                'take-quiz': false,
+                'spend-time': false
+            },
+            activities: [],
+            weeklyActivity: [0, 0, 0, 0, 0, 0, 0], // Mon-Sun minutes
+            level: 1,
+            sessionStartTime: null
+        };
+    }
+};
+
+// ===== TIMER SYSTEM =====
+let timerInterval;
+let sessionSeconds = 0;
+
+function startTimer() {
+    const data = UserData.get();
+    data.sessionStartTime = Date.now();
+    UserData.save(data);
+    
+    timerInterval = setInterval(() => {
+        sessionSeconds++;
+        updateTimerDisplay();
+        
+        // Auto-complete "spend 15 min" goal
+        if (sessionSeconds >= 900 && !data_goals['spend-time']) { // 900 seconds = 15 minutes
+            completeGoal('spend-time', true);
+        }
+    }, 1000);
+}
+
+function updateTimerDisplay() {
+    const hours = Math.floor(sessionSeconds / 3600);
+    const minutes = Math.floor((sessionSeconds % 3600) / 60);
+    const seconds = sessionSeconds % 60;
+    
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    const data = UserData.get();
+    
+    // Save session time
+    data.sessionTime += sessionSeconds;
+    data.todayTime += sessionSeconds;
+    
+    // Update weekly activity
+    const dayOfWeek = new Date().getDay();
+    const adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Convert to Mon-Sun
+    data.weeklyActivity[adjustedDay] += Math.floor(sessionSeconds / 60);
+    
+    // Add points for time spent (1 point per minute)
+    const minutesEarned = Math.floor(sessionSeconds / 60);
+    data.totalScore += minutesEarned;
+    
+    // Log activity
+    if (sessionSeconds >= 60) { // Only log if spent at least 1 minute
+        addActivity('time-spent', `Learning Session`, `${Math.floor(sessionSeconds / 60)} minutes`, 'time');
+    }
+    
+    UserData.save(data);
+    updateAllDisplays();
+}
+
+// ===== GOAL SYSTEM =====
+let data_goals = {};
+
+function loadGoals() {
+    const data = UserData.get();
+    data_goals = data.goals;
+    updateGoalsUI();
+}
+
+function toggleGoal(goalId, auto = false) {
+    if (data_goals[goalId]) return; // Already completed
+    
+    completeGoal(goalId, auto);
+}
+
+function completeGoal(goalId, auto = false) {
+    data_goals[goalId] = true;
+    
+    const data = UserData.get();
+    data.goals[goalId] = true;
+    
+    // Add points for completing goals
+    if (!auto) {
+        data.totalScore += 50; // 50 points per goal
+        addActivity('goal-completed', `Goal: ${goalId.replace('-', ' ')}`, '+50 points', 'goal');
+    }
+    
+    UserData.save(data);
+    updateGoalsUI();
+    updateScoreDisplay();
+    
+    // Check if all goals completed
+    const allCompleted = Object.values(data_goals).every(v => v);
+    if (allCompleted && !auto) {
+        setTimeout(() => {
+            showNotification('🎉 All daily goals completed! +200 bonus points!');
+            data.totalScore += 200;
+            UserData.save(data);
+            updateScoreDisplay();
+        }, 500);
+    }
+}
+
+function updateGoalsUI() {
+    const goalItems = document.querySelectorAll('.goal-item');
+    let completed = 0;
+    
+    goalItems.forEach(item => {
+        const goalId = item.getAttribute('data-goal');
+        if (data_goals[goalId]) {
+            item.classList.add('completed');
+            completed++;
+        } else {
+            item.classList.remove('completed');
+        }
+    });
+    
+    const percentage = (completed / 4) * 100;
+    document.getElementById('goalProgressBar').style.width = percentage + '%';
+    document.getElementById('goalProgressText').textContent = `${Math.round(percentage)}% Completed`;
+}
+
+function resetDailyGoals() {
+    if (confirm('Reset all daily goals?')) {
+        const data = UserData.get();
+        data.goals = {
+            'watch-video': false,
+            'read-article': false,
+            'take-quiz': false,
+            'spend-time': false
+        };
+        data_goals = data.goals;
+        UserData.save(data);
+        updateGoalsUI();
+        showNotification('Daily goals reset');
+    }
+}
+
+// ===== ACTIVITY FEED =====
+function addActivity(type, title, subtitle, iconType) {
+    const data = UserData.get();
+    const activity = {
+        id: Date.now(),
+        type,
+        title,
+        subtitle,
+        iconType,
+        timestamp: new Date().toISOString()
+    };
+    
+    data.activities.unshift(activity); // Add to beginning
+    if (data.activities.length > 20) data.activities.pop(); // Keep last 20
+    
+    UserData.save(data);
+    renderActivityFeed();
+}
+
+function renderActivityFeed() {
+    const data = UserData.get();
+    const feed = document.getElementById('activityFeed');
+    feed.innerHTML = '';
+    
+    if (data.activities.length === 0) {
+        feed.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">No activity yet. Start learning!</p>';
+        return;
+    }
+    
+    data.activities.slice(0, 10).forEach(activity => {
+        const item = document.createElement('div');
+        item.className = 'activity-item';
+        
+        const icons = {
+            'video': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>',
+            'quiz': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+            'goal': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+            'time': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+            'badge': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>'
+        };
+        
+        const colors = {
+            'video': 'blue',
+            'quiz': 'purple',
+            'goal': 'green',
+            'time': 'blue',
+            'badge': 'green'
+        };
+        
+        const timeAgo = getTimeAgo(new Date(activity.timestamp));
+        
+        item.innerHTML = `
+            <div class="activity-icon ${colors[activity.iconType] || 'blue'}">
+                ${icons[activity.iconType] || icons.time}
+            </div>
+            <div class="activity-details">
+                <p class="activity-title">${activity.title}</p>
+                <p class="activity-sub">${activity.subtitle}</p>
+            </div>
+            <span class="activity-time">${timeAgo}</span>
+        `;
+        
+        feed.appendChild(item);
+    });
+}
+
+function clearActivityFeed() {
+    if (confirm('Clear all activity history?')) {
+        const data = UserData.get();
+        data.activities = [];
+        UserData.save(data);
+        renderActivityFeed();
+        showNotification('Activity history cleared');
+    }
+}
+
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+    return `${Math.floor(seconds / 86400)}d ago`;
+}
+
+// ===== STREAK SYSTEM =====
+function updateStreak() {
+    const data = UserData.get();
+    const today = new Date().toDateString();
+    const lastActive = data.lastActive ? new Date(data.lastActive).toDateString() : null;
+    
+    if (lastActive !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (lastActive === yesterday.toDateString()) {
+            data.streak += 1;
+        } else if (lastActive !== today) {
+            data.streak = 1; // Reset or start new
+        }
+        
+        data.lastActive = new Date().toISOString();
+        UserData.save(data);
+    }
+    
+    // Update UI
+    document.getElementById('streakCount').textContent = data.streak;
+    
+    const ring = document.getElementById('streakRing');
+    const maxStreak = 30; // 30 days for full circle
+    const offset = 251 - (Math.min(data.streak, maxStreak) / maxStreak) * 251;
+    ring.style.strokeDashoffset = offset;
+    
+    const message = document.getElementById('streakMessage');
+    if (data.streak === 0) message.textContent = 'Start your streak!';
+    else if (data.streak < 7) message.textContent = `🔥 ${data.streak} days! Keep going!`;
+    else if (data.streak < 30) message.textContent = ` ${data.streak} days! Amazing!`;
+    else message.textContent = `👑 ${data.streak} days! Legend!`;
+}
+
+// ===== SCORE & LEVEL SYSTEM =====
+function updateScoreDisplay() {
+    const data = UserData.get();
+    document.getElementById('totalScore').textContent = data.totalScore.toLocaleString();
+    
+    // Calculate level (1 point per level, adjust as needed)
+    const level = Math.floor(data.totalScore / 500) + 1;
+    data.level = level;
+    UserData.save(data);
+    
+    document.getElementById('userLevel').textContent = `Level ${level}`;
+    
+    // Update trend
+    const weekPoints = data.weeklyActivity.reduce((a, b) => a + b, 0);
+    document.querySelector('#scoreTrend span').textContent = `+${weekPoints} this week`;
+}
+
+// ===== WEEKLY CHART =====
+function renderWeeklyChart() {
+    const data = UserData.get();
+    const chart = document.getElementById('activityChart');
+    chart.innerHTML = '';
+    
+    const maxMinutes = Math.max(...data.weeklyActivity, 60); // At least 60 for scaling
+    
+    data.weeklyActivity.forEach((minutes, index) => {
+        const bar = document.createElement('div');
+        bar.className = 'bar' + (index === new Date().getDay() - 1 ? ' active' : '');
+        const height = (minutes / maxMinutes) * 100;
+        bar.style.height = Math.max(height, 5) + '%'; // Minimum 5% height
+        bar.title = `${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}: ${minutes} min`;
+        chart.appendChild(bar);
+    });
+    
+    document.getElementById('weekMinutes').textContent = data.weeklyActivity.reduce((a, b) => a + b, 0);
+}
+
+// ===== UTILITIES =====
+function updateAllDisplays() {
+    const data = UserData.get();
+    
+    // Update time displays
+    document.getElementById('todayTotal').textContent = formatTime(data.todayTime);
+    document.getElementById('weekTotal').textContent = formatTime(data.weekTime);
+    
+    updateScoreDisplay();
+    updateStreak();
+    renderWeeklyChart();
+    renderActivityFeed();
+    loadGoals();
+}
+
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+}
+
+function showNotification(message) {
+    // Use existing notification system if available
+    const notification = document.getElementById('notification');
+    if (notification) {
+        const text = document.getElementById('notification-text');
+        text.textContent = message;
+        notification.classList.add('show');
+        setTimeout(() => notification.classList.remove('show'), 3000);
+    } else {
+        alert(message);
+    }
+}
+
+// ===== SIMULATION FUNCTIONS (For Testing) =====
+function simulateActivity(type) {
+    const activities = {
+        'video': { title: 'Completed Lesson', sub: 'Privacy Basics', points: 100 },
+        'quiz': { title: 'Quiz Passed', sub: 'Password Security (95%)', points: 150 },
+        'badge': { title: 'New Badge Earned', sub: 'Privacy Protector', points: 200 }
+    };
+    
+    const activity = activities[type];
+    if (!activity) return;
+    
+    const data = UserData.get();
+    data.totalScore += activity.points;
+    UserData.save(data);
+    
+    addActivity(type, activity.title, activity.sub, type);
+    updateScoreDisplay();
+    showNotification(`${activity.title} +${activity.points} points!`);
+}
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+    // Set date
+    const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+    
+    // Load saved data
+    updateAllDisplays();
+    
+    // Start timer
+    startTimer();
+    
+    // Add sample activity if first time
+    const data = UserData.get();
+    if (data.activities.length === 0) {
+        addActivity('badge', 'Welcome!', 'Joined Digital Citizenship', 'badge');
+    }
+    
+    // Save on page unload
+    window.addEventListener('beforeunload', stopTimer);
+    
+    // Expose simulation functions for testing
+    window.simulateActivity = simulateActivity;
+    window.completeGoal = completeGoal;
+});
+</script>
+
+<style>
+/* Additional Timer Styles */
+.timer-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 16px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.time-unit {
+    text-align: center;
+}
+
+.time-value {
+    display: block;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #667eea;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.time-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #a0a0a0;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.time-separator {
+    font-size: 2rem;
+    color: #667eea;
+    font-weight: 300;
+}
+
+.session-stats {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.session-stat {
+    text-align: center;
+    padding: 12px 24px;
+    background: #2a2a2a;
+    border-radius: 12px;
+}
+
+.session-stat .stat-label {
+    display: block;
+    color: #666;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+}
+
+.session-stat .stat-value {
+    display: block;
+    color: white;
+    font-weight: 600;
+    font-size: 1.125rem;
+}
+
+#sessionStatus {
+    background: rgba(67, 233, 123, 0.2);
+    color: #43e97b;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Goal Check Animation */
+.goal-check {
+    transition: all 0.3s ease;
+}
+
+.goal-item.completed .goal-check {
+    background: #43e97b;
+    border-color: #43e97b;
+    transform: scale(1.1);
+}
+
+.goal-check svg {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease;
+}
+
+.goal-item.completed .goal-check svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Activity Item Animation */
+.activity-item {
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Chart Bar Hover */
+.bar {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bar:hover {
+    filter: brightness(1.3);
+    transform: scaleY(1.05);
+}
+
+/* Responsive Timer */
+@media (max-width: 768px) {
+    .timer-display {
+        gap: 8px;
+        padding: 16px;
+    }
+    
+    .time-value {
+        font-size: 2rem;
+    }
+    
+    .time-label {
+        font-size: 0.75rem;
+    }
+    
+    .time-separator {
+        font-size: 1.5rem;
+    }
+    
+    .session-stats {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+</style>
