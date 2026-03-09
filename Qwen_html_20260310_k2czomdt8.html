@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>DigitalAware - Empowering Digital Citizens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary-purple: #6B4EE6;
+            --dark-purple: #2D1B69;
+            --pink: #FF6B9D;
+            --light-pink: #FFB3D9;
+            --dark-bg: #1A1A2E;
+            --text-light: #FFFFFF;
+            --text-gray: #B8B8D1;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Navigation - Only on Home Section */
+        nav {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(26, 26, 46, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        nav.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-100%);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--pink);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-nav {
+            padding: 8px 16px;
+            border: 2px solid var(--text-light);
+            border-radius: 5px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .cta-nav:hover {
+            background: var(--text-light);
+            color: var(--dark-bg);
+        }
+
+        /* Hero Section with Video Background */
+        .hero {
+            min-height: 100vh;
+            min-height: 100dvh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            width: 100%;
+            padding: 100px 20px 40px;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 154, 158, 0.2) 0%, rgba(254, 207, 239, 0.2) 30%, rgba(161, 140, 209, 0.2) 70%, rgba(107, 78, 230, 0.3) 100%);
+            z-index: 1;
+        }
+
+        .hero-dark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.5);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 100;
+            text-align: center;
+            padding: 20px;
+            max-width: 90%;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 10vw, 80px);
+            font-weight: 700;
+            letter-spacing: clamp(8px, 2vw, 12px);
+            margin-bottom: 10px;
+            line-height: 1.1;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            background: linear-gradient(to right, #fff, #FFB3D9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(14px, 3vw, 18px);
+            letter-spacing: clamp(4px, 1vw, 6px);
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-description {
+            font-size: clamp(14px, 2.5vw, 16px);
+            color: var(--text-light);
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+            line-height: 1.6;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 35px;
+            background: white;
+            color: var(--dark-purple);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 2px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Learn Section */
+        .learn-section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 120px 20px 60px;
+            background: linear-gradient(to bottom, var(--dark-bg), #2D1B69);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .learn-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .section-label {
+            color: var(--pink);
+            font-size: 13px;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .section-description {
+            font-size: clamp(14px, 2vw, 16px);
+            line-height: 1.7;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .topic-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 180px;
+        }
+
+        .topic-card:hover {
+            background: rgba(107, 78, 230, 0.2);
+            border-color: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+
+        .topic-content {
+            flex: 1;
+        }
+
+        .topic-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--pink));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .topic-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .topic-text {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .learn-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--pink));
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .learn-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(107, 78, 230, 0.5);
+        }
+
+        .learn-more-btn::after {
+            content: '→';
+            transition: transform 0.3s;
+        }
+
+        .learn-more-btn:hover::after {
+            transform: translateX(3px);
+        }
+
+        .shield-container {
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shield-illustration {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(107, 78, 230, 0.2), rgba(255, 107, 157, 0.2));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .shield-placeholder {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .shield-icon {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            box-shadow: 0 0 40px rgba(107, 78, 230, 0.5);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(107, 78, 230, 0.5); }
+            50% { box-shadow: 0 0 60px rgba(255, 107, 157, 0.8); }
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .float-element {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            animation: floatElement 4s ease-in-out infinite;
+        }
+
+        @keyframes floatElement {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        /* Listen Section */
+        .listen-section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 120px 20px 60px;
+            background: linear-gradient(to bottom, #2D1B69, #1A1A2E);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .listen-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        .audio-player-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 40px;
+        }
+
+        .audio-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 50px;
+            animation: audioPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes audioPulse {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(107, 78, 230, 0.5);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 60px rgba(255, 107, 157, 0.8);
+                transform: scale(1.05);
+            }
+        }
+
+        .audio-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .audio-description {
+            font-size: 16px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .custom-audio-player {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .play-pause-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--pink));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .play-pause-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(107, 78, 230, 0.6);
+        }
+
+        .progress-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-purple), var(--pink));
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 15px;
+        }
+
+        .volume-icon {
+            font-size: 18px;
+            color: var(--text-gray);
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: var(--pink);
+            border-radius: 2px;
+            width: 80%;
+        }
+
+        .waveform {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 40px;
+            margin: 30px 0;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: linear-gradient(to top, var(--primary-purple), var(--pink));
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 10px; }
+            50% { height: 30px; }
+        }
+
+        /* Cards Section */
+        .cards-section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 120px 20px 60px;
+            background: linear-gradient(to bottom, #2D1B69, var(--dark-bg));
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .cards-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        .cards-carousel {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            margin: 60px 0;
+            perspective: 2000px;
+            touch-action: pan-y;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .cards-carousel:active {
+            cursor: grabbing;
+        }
+
+        .info-card {
+            position: absolute;
+            width: 260px;
+            height: 380px;
+            left: 50%;
+            top: 50%;
+            margin-left: -130px;
+            margin-top: -190px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .info-card.center {
+            transform: translateX(0) rotateY(0deg) scale(1.15) translateZ(50px);
+            z-index: 10;
+        }
+
+        .info-card.left {
+            transform: translateX(-280px) rotateY(25deg) scale(0.85) translateZ(-100px);
+            opacity: 0.7;
+            z-index: 5;
+        }
+
+        .info-card.right {
+            transform: translateX(280px) rotateY(-25deg) scale(0.85) translateZ(-100px);
+            opacity: 0.7;
+            z-index: 5;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center center;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                        0 0 0 4px #4a3b69,
+                        0 0 0 8px #1a0b2e;
+            top: 0;
+            left: 0;
+        }
+
+        .card-back {
+            background: linear-gradient(180deg, #3d2a7a 0%, #2d1b69 50%, #1a0b2e 100%);
+            transform: rotateY(0deg);
+            border: 3px solid #4a3b69;
+            position: relative;
+        }
+
+        .outer-frame {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 2px solid #6b4ee6;
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .corner {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            z-index: 10;
+        }
+
+        .corner-triangle {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff8c42 0%, #ff6b9d 50%, #ff4757 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            box-shadow: 0 0 12px rgba(255, 107, 157, 0.8);
+        }
+
+        .corner.top-left { top: 12px; left: 12px; }
+        .corner.top-left .corner-triangle { clip-path: polygon(0 0, 100% 0, 0 100%); }
+        .corner.top-right { top: 12px; right: 12px; }
+        .corner.top-right .corner-triangle { clip-path: polygon(0 0, 100% 0, 100% 100%); }
+        .corner.bottom-left { bottom: 12px; left: 12px; }
+        .corner.bottom-left .corner-triangle { clip-path: polygon(0 0, 100% 0, 0 100%); }
+        .corner.bottom-right { bottom: 12px; right: 12px; }
+        .corner.bottom-right .corner-triangle { clip-path: polygon(0 0, 100% 0, 100% 100%); }
+
+        .main-frame {
+            position: absolute;
+            top: 40px;
+            left: 35px;
+            right: 35px;
+            bottom: 40px;
+        }
+
+        .top-triangle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 45px solid #4a3b69;
+        }
+
+        .top-triangle::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: -45px;
+            width: 0;
+            height: 0;
+            border-left: 45px solid transparent;
+            border-right: 45px solid transparent;
+            border-bottom: 35px solid #6b4ee6;
+        }
+
+        .side-binding {
+            position: absolute;
+            width: 16px;
+            height: 45px;
+            background: linear-gradient(90deg, #4a3b69 0%, #6b4ee6 50%, #4a3b69 100%);
+            border-radius: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 8px rgba(107, 78, 230, 0.5);
+        }
+
+        .side-binding.left { left: -8px; }
+        .side-binding.right { right: -8px; }
+
+        .honeycomb {
+            position: absolute;
+            width: 55px;
+            height: 60px;
+            background: repeating-linear-gradient(30deg, #2d1b69 0px, #2d1b69 8px, #3d2a7a 8px, #3d2a7a 16px);
+            border-radius: 6px;
+            opacity: 0.6;
+        }
+
+        .honeycomb.top-left { top: 45px; left: 15px; }
+        .honeycomb.top-right { top: 45px; right: 15px; }
+        .honeycomb.bottom-left { bottom: 45px; left: 15px; }
+        .honeycomb.bottom-right { bottom: 45px; right: 15px; }
+
+        .swords-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px;
+            height: 160px;
+        }
+
+        .sword {
+            position: absolute;
+            width: 20px;
+            height: 130px;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+        }
+
+        .sword.left { transform: translate(-50%, -50%) rotate(-45deg); }
+        .sword.right { transform: translate(-50%, -50%) rotate(45deg); }
+
+        .sword-blade {
+            position: absolute;
+            width: 100%;
+            height: 80px;
+            top: 0;
+            background: linear-gradient(90deg, #4a3b69 0%, #6b4ee6 20%, #8b7dd8 50%, #6b4ee6 80%, #4a3b69 100%);
+            clip-path: polygon(50% 0%, 100% 20%, 100% 100%, 0 100%, 0 20%);
+            box-shadow: 0 0 15px rgba(107, 78, 230, 0.6);
+        }
+
+        .sword-handle {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            bottom: 0;
+            background: repeating-linear-gradient(0deg, #4a3b69 0px, #4a3b69 4px, #6b4ee6 4px, #6b4ee6 8px);
+            border-radius: 3px;
+        }
+
+        .sword-guard {
+            position: absolute;
+            width: 32px;
+            height: 6px;
+            background: linear-gradient(90deg, #4a3b69, #6b4ee6, #4a3b69);
+            top: 76px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .sword.left .sword-guard { transform: translateX(-50%) rotate(45deg); }
+        .sword.right .sword-guard { transform: translateX(-50%) rotate(-45deg); }
+
+        .gem-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            z-index: 20;
+        }
+
+        .gem-base {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2d1b69 0%, #1a0b2e 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border: 2px solid #6b4ee6;
+            box-shadow: 0 0 25px rgba(107, 78, 230, 0.8);
+        }
+
+        .gem {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ff8c42 0%, #ff6b9d 30%, #ff4757 60%, #ff8c42 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.9), 0 0 60px rgba(255, 140, 66, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.4);
+            animation: gemPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes gemPulse {
+            0%, 100% { 
+                box-shadow: 0 0 30px rgba(255, 107, 157, 0.9), 0 0 60px rgba(255, 140, 66, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.4);
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 45px rgba(255, 107, 157, 1), 0 0 75px rgba(255, 140, 66, 0.8), inset 0 0 22px rgba(255, 255, 255, 0.6);
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+        }
+
+        .claw-mark {
+            position: absolute;
+            width: 6px;
+            height: 28px;
+            background: linear-gradient(to bottom, #6b4ee6, #8b7dd8);
+            border-radius: 50% 50% 50% 50% / 100% 100% 0 0;
+            box-shadow: 0 0 12px rgba(107, 78, 230, 0.8);
+        }
+
+        .claw-mark.left-1 { top: 50%; left: 16px; transform: translateY(-50%) rotate(-30deg); }
+        .claw-mark.left-2 { top: 50%; left: 8px; transform: translateY(-50%) rotate(-15deg); }
+        .claw-mark.left-3 { top: 50%; left: 4px; transform: translateY(-50%) rotate(0deg); }
+        .claw-mark.right-1 { top: 50%; right: 16px; transform: translateY(-50%) rotate(30deg); }
+        .claw-mark.right-2 { top: 50%; right: 8px; transform: translateY(-50%) rotate(15deg); }
+        .claw-mark.right-3 { top: 50%; right: 4px; transform: translateY(-50%) rotate(0deg); }
+        .claw-mark.bottom-1 { bottom: 110px; left: 50%; transform: translateX(-50%) rotate(-20deg); }
+        .claw-mark.bottom-2 { bottom: 106px; left: 50%; transform: translateX(-50%); }
+        .claw-mark.bottom-3 { bottom: 110px; left: 50%; transform: translateX(-50%) rotate(20deg); }
+
+        .inner-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 280px;
+            background: radial-gradient(ellipse at center, rgba(107, 78, 230, 0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #2d1b69 0%, #1a0b2e 100%);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            border: 3px solid #4a3b69;
+        }
+
+        .card-artwork {
+            flex: 1;
+            background: linear-gradient(135deg, #1a0b2e 0%, #2d1b69 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .character-art {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #6b4ee6, #ff6b9d);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 30px rgba(107, 78, 230, 0.6);
+        }
+
+        .character-art::before {
+            content: '🔒';
+            font-size: 60px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+        }
+
+        .card-info {
+            padding: 16px;
+            background: linear-gradient(to bottom, rgba(45, 27, 105, 0.8), rgba(26, 11, 46, 0.9));
+            border-top: 2px solid #6b4ee6;
+        }
+
+        .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card-description {
+            font-size: 11px;
+            color: #b8b8d1;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 11px;
+            color: #ff6b9d;
+            font-weight: 600;
+            z-index: 30;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .carousel-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--pink);
+            background: transparent;
+            color: var(--pink);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-btn:hover {
+            background: var(--pink);
+            color: white;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--pink);
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .swipe-hint {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 13px;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        /* About Section */
+        .about-section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 120px 20px 60px;
+            background: linear-gradient(to bottom, #1A1A2E, var(--dark-bg));
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .about-card-display {
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-card {
+            width: 300px;
+            height: 420px;
+            background: linear-gradient(135deg, #2D1B69, #1A1A2E);
+            border: 4px solid var(--primary-purple);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(107, 78, 230, 0.4);
+        }
+
+        .about-card-inner {
+            padding: 25px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-icon {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--pink), var(--primary-purple));
+            box-shadow: 0 0 25px rgba(255, 107, 157, 0.5);
+            animation: iconGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes iconGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(255, 107, 157, 0.5); }
+            50% { box-shadow: 0 0 50px rgba(107, 78, 230, 0.8); }
+        }
+
+        .about-icon video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .floating-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: float 4s ease-in-out infinite;
+            box-shadow: 0 0 15px #FFD700;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-15px) translateX(8px); }
+            50% { transform: translateY(0) translateX(15px); }
+            75% { transform: translateY(15px) translateX(8px); }
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 20px;
+            background: #0f0f1e;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: var(--pink);
+        }
+
+        .copyright {
+            color: var(--text-gray);
+            font-size: 13px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .learn-content,
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .shield-container,
+            .about-card-display {
+                height: 300px;
+                order: -1;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            nav {
+                padding: 12px 20px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 90px 15px 30px;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-card {
+                width: 220px;
+                height: 320px;
+                margin-left: -110px;
+                margin-top: -160px;
+            }
+
+            .info-card.left {
+                transform: translateX(-180px) rotateY(25deg) scale(0.8) translateZ(-80px);
+            }
+
+            .info-card.right {
+                transform: translateX(180px) rotateY(-25deg) scale(0.8) translateZ(-80px);
+            }
+
+            .cards-carousel {
+                height: 380px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .learn-section,
+            .about-section,
+            .cards-section,
+            .listen-section {
+                padding: 100px 15px 40px;
+            }
+
+            .custom-audio-player {
+                flex-wrap: wrap;
+            }
+
+            .volume-control {
+                width: 100%;
+                justify-content: center;
+                margin-left: 0;
+                margin-top: 15px;
+            }
+
+            .about-icon {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 36px;
+                letter-spacing: 4px;
+            }
+
+            .info-card {
+                width: 180px;
+                height: 270px;
+                margin-left: -90px;
+                margin-top: -135px;
+            }
+
+            .info-card.left {
+                transform: translateX(-130px) rotateY(25deg) scale(0.75) translateZ(-60px);
+            }
+
+            .info-card.right {
+                transform: translateX(130px) rotateY(-25deg) scale(0.75) translateZ(-60px);
+            }
+
+            .cards-carousel {
+                height: 330px;
+            }
+
+            .character-art {
+                width: 100px;
+                height: 100px;
+            }
+
+            .character-art::before {
+                font-size: 45px;
+            }
+
+            .audio-icon {
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+            }
+
+            .audio-title {
+                font-size: 22px;
+            }
+
+            .about-icon {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation - Only on Home Section -->
+    <nav id="navbar">
+        <div class="logo">DIGITALAWARE</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#learn">Learn</a></li>
+            <li><a href="#listen">Listen</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+        <a href="#learn" class="cta-nav">Get Started</a>
+    </nav>
+
+    <!-- Hero Section with Video Background -->
+    <section class="hero" id="home">
+        <video class="hero-video" autoplay loop muted playsinline poster="https://via.placeholder.com/1920x1080/1a0b2e/6b4ee6?text=Loading...">
+            <source src="https://github.com/user-attachments/assets/9a54b48c-4b87-4ad7-aea9-a729c2b64abb" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-dark-overlay"></div>
+        
+        <div class="hero-content">
+            <h1>DIGITAL<br>AWARE</h1>
+            <p class="hero-subtitle">EMPOWERING DIGITAL CITIZENS</p>
+            <p class="hero-description">
+                Stay safe in the digital world. Learn essential skills to protect yourself online 
+                and navigate the digital landscape with confidence.
+            </p>
+            <a href="#learn" class="cta-button">JOIN THE WAITLIST</a>
+        </div>
+    </section>
+
+    <!-- Learn Section -->
+    <section class="learn-section" id="learn">
+        <div class="learn-content">
+            <div class="learn-text fade-in">
+                <p class="section-label">Learning Resources</p>
+                <h2 class="section-title">MASTER DIGITAL SAFETY</h2>
+                <p class="section-description">
+                    Comprehensive guides and resources to help you master digital safety and become 
+                    a confident digital citizen. Learn from experts and protect yourself online.
+                </p>
+                <div class="topics-grid">
+                    <!-- Password Security -->
+                    <div class="topic-card">
+                        <div class="topic-content">
+                            <div class="topic-icon">🔒</div>
+                            <h3 class="topic-title">Password Security</h3>
+                            <p class="topic-text">Create strong, unique passwords and use password managers effectively.</p>
+                        </div>
+                        <button class="learn-more-btn" onclick="openTopic('password-security')">Learn More</button>
+                    </div>
+
+                    <!-- Phishing Awareness -->
+                    <div class="topic-card">
+                        <div class="topic-content">
+                            <div class="topic-icon">🎣</div>
+                            <h3 class="topic-title">Phishing Awareness</h3>
+                            <p class="topic-text">Identify and avoid phishing scams and suspicious emails.</p>
+                        </div>
+                        <button class="learn-more-btn" onclick="openTopic('phishing-awareness')">Learn More</button>
+                    </div>
+
+                    <!-- Privacy Protection -->
+                    <div class="topic-card">
+                        <div class="topic-content">
+                            <div class="topic-icon">🛡️</div>
+                            <h3 class="topic-title">Privacy Protection</h3>
+                            <p class="topic-text">Control your personal data and understand privacy settings.</p>
+                        </div>
+                        <button class="learn-more-btn" onclick="openTopic('privacy-protection')">Learn More</button>
+                    </div>
+
+                    <!-- Secure Browsing -->
+                    <div class="topic-card">
+                        <div class="topic-content">
+                            <div class="topic-icon">🌐</div>
+                            <h3 class="topic-title">Secure Browsing</h3>
+                            <p class="topic-text">Develop safe browsing habits and recognize secure websites.</p>
+                        </div>
+                        <button class="learn-more-btn" onclick="openTopic('secure-browsing')">Learn More</button>
+                    </div>
+                </div>
+            </div>
+            <div class="shield-container fade-in">
+                <div class="shield-illustration">
+                    <div class="shield-placeholder">
+                        <div class="shield-icon">🛡️</div>
+                        <p style="color: var(--text-gray); font-size: 13px;">Digital Security Shield</p>
+                    </div>
+                </div>
+                <div class="floating-elements">
+                    <div class="float-element" style="top: 10%; left: 10%; animation-delay: 0s;">🔐</div>
+                    <div class="float-element" style="top: 60%; left: 5%; animation-delay: 1s;">🔑</div>
+                    <div class="float-element" style="top: 20%; right: 10%; animation-delay: 2s;">💻</div>
+                    <div class="float-element" style="bottom: 20%; right: 5%; animation-delay: 1.5s;">📱</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Listen Section -->
+    <section class="listen-section" id="listen">
+        <div class="listen-container">
+            <p class="section-label fade-in">Audio Content</p>
+            <h2 class="section-title fade-in">LISTEN & LEARN</h2>
+            <p class="section-description fade-in" style="max-width: 600px; margin: 0 auto;">
+                Listen to our expert podcast on digital safety. Learn while you commute, exercise, or relax.
+            </p>
+
+            <div class="audio-player-wrapper fade-in">
+                <div class="audio-icon">🎧</div>
+                <h3 class="audio-title">Digital Safety Podcast - Episode 1</h3>
+                <p class="audio-description">
+                    Learn the fundamentals of protecting yourself online, from password security to recognizing phishing attempts.
+                </p>
+
+                <div class="waveform">
+                    <div class="wave-bar" style="animation-delay: 0s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.1s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.3s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.4s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.5s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.3s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0.1s;"></div>
+                    <div class="wave-bar" style="animation-delay: 0s;"></div>
+                </div>
+
+                <audio id="audioPlayer" preload="metadata">
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+
+                <div class="custom-audio-player">
+                    <button class="play-pause-btn" id="playPauseBtn" onclick="togglePlay()">
+                        <i class="play-icon">▶</i>
+                    </button>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" onclick="seekAudio(event)">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="time-display">
+                            <span id="currentTime">0:00</span>
+                            <span id="duration">0:00</span>
+                        </div>
+                    </div>
+
+                    <div class="volume-control">
+                        <span class="volume-icon">🔊</span>
+                        <div class="volume-slider" id="volumeSlider" onclick="setVolume(event)">
+                            <div class="volume-fill" id="volumeFill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="cards-section" id="cards">
+        <div class="cards-container">
+            <p class="section-label fade-in">Digital Skills</p>
+            <h2 class="section-title fade-in">ESSENTIAL KNOWLEDGE</h2>
+            
+            <div class="cards-carousel" id="cardsCarousel">
+                <!-- Card 1 -->
+                <div class="info-card left" onclick="flipCard(0)">
+                    <div class="card-inner">
+                        <div class="card-face card-back">
+                            <div class="card-number">01/03</div>
+                            <div class="outer-frame"></div>
+                            <div class="corner top-left"><div class="corner-triangle"></div></div>
+                            <div class="corner top-right"><div class="corner-triangle"></div></div>
+                            <div class="corner bottom-left"><div class="corner-triangle"></div></div>
+                            <div class="corner bottom-right"><div class="corner-triangle"></div></div>
+                            <div class="main-frame">
+                                <div class="top-triangle"></div>
+                                <div class="side-binding left"></div>
+                                <div class="side-binding right"></div>
+                                <div class="honeycomb top-left"></div>
+                                <div class="honeycomb top-right"></div>
+                                <div class="honeycomb bottom-left"></div>
+                                <div class="honeycomb bottom-right"></div>
+                                <div class="swords-container">
+                                    <div class="sword left">
+                                        <div class="sword-blade"></div>
+                                        <div class="sword-guard"></div>
+                                        <div class="sword-handle"></div>
+                                    </div>
+                                    <div class="sword right">
+                                        <div class="sword-blade"></div>
+                                        <div class="sword-guard"></div>
+                                        <div class="sword-handle"></div>
+                                    </div>
+                                    <div class="gem-container">
+                                        <div class="gem-base"></div>
+                                        <div class="gem"></div>
+                                    </div>
+                                    <div class="claw-mark left-1"></div>
+                                    <div class="claw-mark left-2"></div>
+                                    <div class="claw-mark left-3"></div>
+                                    <div class="claw-mark right-1"></div>
+                                    <div class="claw-mark right-2"></div>
+                                    <div class="claw-mark right-3"></div>
+                                    <div class="claw-mark bottom-1"></div>
+                                    <div class="claw-mark bottom-2"></div>
+                                    <div class="claw-mark bottom-3"></div>
+                                </div>
+                            </div>
+                            <div class="inner-glow"></div>
+                        </div>
+                        <div class="card-face card-front">
+                            <div class="card-artwork">
+                                <div class="character-art"></div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">Security</h3>
+                                <p class="card-description">Protect your digital identity and personal information from threats.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 (Center) -->
+                <div class="info-card center" onclick="flipCard(1)">
+                    <div class="card-inner">
+                        <div class="card-face card-back">
+                            <div class="card-number">02/03</div>
+                            <div class="outer-frame"></div>
+                            <div class="corner top-left"><div class="corner-triangle"></div></div>
+                            <div class="corner top-right"><div class="corner-triangle"></div></div>
+                            <div class="corner bottom-left"><div class="corner-triangle"></div></div>
+                            <div class="corner bottom-right"><div class="corner-triangle"></div></div>
+                            <div class="main-frame">
+                                <div class="top-triangle"></div>
+                                <div class="side-binding left"></div>
+                                <div class="side-binding right"></div>
+                                <div class="honeycomb top-left"></div>
+                                <div class="honeycomb top-right"></div>
+                                <div class="honeycomb bottom-left"></div>
+                                <div class="honeycomb bottom-right"></div>
+                                <div class="swords-container">
+                                    <div class="sword left">
+                                        <div class="sword-blade"></div>
+                                        <div class="sword-guard"></div>
+                                        <div class="sword-handle"></div>
+                                    </div>
+                                    <div class="sword right">
+                                        <div class="sword-blade"></div>
+                                        <div class="sword-guard"></div>
+                                        <div class="sword-handle"></div>
+                                    </div>
+                                    <div class="gem-container">
+                                        <div class="gem-base"></div>
+                                        <div class="gem"></div>
+                                    </div>
+                                    <div class="claw-mark left-1"></div>
+                                    <div class="claw-mark left-2"></div>
+                                    <div class="claw-mark left-3"></div>
+                                    <div class="claw-mark right-1"></div>
+                                    <div class="claw-mark right-2"></div>
+                                    <div class="claw-mark right-3"></div>
+                                    <div class="claw-mark bottom-1"></div>
+                                    <div class="claw-mark bottom-2"></div>
+                                    <div class="claw-mark bottom-3"></div>
+                                </div>
+                            </div>
+                            <div class="inner-glow"></div>
+                        </div>
+                        <div class="card-face card-front">
+                            <div class="card-artwork">
+                                <div class="character-art" style="background: linear-gradient(135deg, #10B981, #06B6D4);"></div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">Education</h3>
+                                <p class="card-description">Access comprehensive learning resources to become a confident digital citizen.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="info-card right" onclick="flipCard(2)">
+                    <div class="card-inner">
+                        <div class="card-face card-back">
+                            <div class="card-number">03/03</div>
+                            <div class="outer-frame"></div>
+                            <div class="corner top-left"><div class="corner-triangle"></div></div>
+                            <div class="corner top-right"><div class="corner-triangle"></div></div>
+                            <div class="corner bottom-left"><div class="corner-triangle"></div></div>
+                            <div class="corner bottom-right"><div class="corner-triangle"></div></div>
+                            <div class="main-frame">
+                                <div class="top-triangle"></div>
+                                <div class="side-binding left"></div>
+                                <div class="side-binding right"></div>
+                                <div class="honeycomb top-left"></div>
+                                <div class="honeycomb top-right"></div>
+                                <div class="honeycomb bottom-left"></div>
+                                <div class="honeycomb bottom-right"></div>
+                                <div class="swords-container">
+                                    <div class="sword left">
+                                        <div class="sword-blade"></div>
+                                        <div class="sword-guard"></div>
+                                        <div class="sword-handle"></div>
+                                    </div>
+                                    <div class="sword right">
+                                        <div class="sword-blade"></div>
+                                        <div class="sword-guard"></div>
+                                        <div class="sword-handle"></div>
+                                    </div>
+                                    <div class="gem-container">
+                                        <div class="gem-base"></div>
+                                        <div class="gem"></div>
+                                    </div>
+                                    <div class="claw-mark left-1"></div>
+                                    <div class="claw-mark left-2"></div>
+                                    <div class="claw-mark left-3"></div>
+                                    <div class="claw-mark right-1"></div>
+                                    <div class="claw-mark right-2"></div>
+                                    <div class="claw-mark right-3"></div>
+                                    <div class="claw-mark bottom-1"></div>
+                                    <div class="claw-mark bottom-2"></div>
+                                    <div class="claw-mark bottom-3"></div>
+                                </div>
+                            </div>
+                            <div class="inner-glow"></div>
+                        </div>
+                        <div class="card-face card-front">
+                            <div class="card-artwork">
+                                <div class="character-art" style="background: linear-gradient(135deg, #F59E0B, #EF4444);"></div>
+                            </div>
+                            <div class="card-info">
+                                <h3 class="card-title">Awareness</h3>
+                                <p class="card-description">Stay updated with the latest digital threats and best practices.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-btn" onclick="changeCard(-1)">‹</button>
+                <div class="carousel-dots">
+                    <div class="dot active" onclick="goToCard(0)"></div>
+                    <div class="dot" onclick="goToCard(1)"></div>
+                    <div class="dot" onclick="goToCard(2)"></div>
+                </div>
+                <button class="carousel-btn" onclick="changeCard(1)">›</button>
+            </div>
+            <p class="swipe-hint">← Swipe or drag cards to navigate →</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p class="section-label">About Us</p>
+                <h2 class="section-title">EMPOWERING DIGITAL CITIZENS WORLDWIDE</h2>
+                <p class="section-description">
+                    DigitalAware is dedicated to making digital safety education accessible to everyone. 
+                    We believe that everyone deserves to navigate the digital world with confidence and security.
+                </p>
+                <p class="section-description">
+                    Our mission is to provide free, high-quality resources that help people of all ages 
+                    develop the skills they need to stay safe online and become responsible digital citizens.
+                </p>
+                <a href="#learn" class="cta-button">START LEARNING</a>
+            </div>
+            <div class="about-card-display fade-in">
+                <div class="about-card">
+                    <div class="about-card-inner">
+                        <!-- Video in circle for Global Impact -->
+                        <div class="about-icon">
+                            <video autoplay loop muted playsinline poster="https://via.placeholder.com/140/6b4ee6/ffffff?text=🌐">
+                                <source src="https://github.com/user-attachments/assets/0835661b-c215-4cab-be3b-7e402cca652a" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h3 class="card-title" style="color: white; margin-bottom: 10px; font-size: 20px;">GLOBAL IMPACT</h3>
+                        <p class="card-description" style="color: rgba(255,255,255,0.8); text-align: center; font-size: 13px;">
+                            Empowering millions of users worldwide with digital literacy and safety skills
+                        </p>
+                    </div>
+                </div>
+                <div class="floating-orbs" id="floating-orbs"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">DIGITALAWARE</div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#learn">Learn</a>
+            <a href="#listen">Listen</a>
+            <a href="#about">About</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <p class="copyright">© 2024 DigitalAware. All rights reserved. Empowering Digital Citizens.</p>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Navigation - Hide when scrolling past home section
+        const navbar = document.getElementById('navbar');
+        const heroSection = document.querySelector('.hero');
+
+        window.addEventListener('scroll', () => {
+            const heroHeight = heroSection.offsetHeight;
+            const scrollPosition = window.scrollY + window.innerHeight;
+
+            if (scrollPosition > heroHeight) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+        });
+
+        // ✅ UPDATED: Topic Learn More functionality - Redirects to separate pages
+        function openTopic(topicId) {
+            const topicPages = {
+                'password-security': 'password-security.html',
+                'phishing-awareness': 'phishing-awareness.html',
+                'privacy-protection': 'privacy-protection.html',
+                'secure-browsing': 'secure-browsing.html'
+            };
+            
+            const targetPage = topicPages[topicId];
+            if (targetPage) {
+                window.location.href = targetPage;
+            } else {
+                console.log('Topic page not found:', topicId);
+            }
+        }
+
+        // Audio Player Functions
+        const audio = document.getElementById('audioPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const volumeFill = document.getElementById('volumeFill');
+        const waveBars = document.querySelectorAll('.wave-bar');
+        let isPlaying = false;
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playPauseBtn.innerHTML = '<i class="play-icon">▶</i>';
+                waveBars.forEach(bar => bar.style.animationPlayState = 'paused');
+            } else {
+                audio.play();
+                playPauseBtn.innerHTML = '<i class="play-icon">⏸</i>';
+                waveBars.forEach(bar => bar.style.animationPlayState = 'running');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function updateProgress() {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function seekAudio(event) {
+            const progressBar = document.getElementById('progressBar');
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        }
+
+        function setVolume(event) {
+            const volumeSlider = document.getElementById('volumeSlider');
+            const rect = volumeSlider.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            audio.volume = Math.max(0, Math.min(1, percent));
+            volumeFill.style.width = (percent * 100) + '%';
+        }
+
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            playPauseBtn.innerHTML = '<i class="play-icon">▶</i>';
+            waveBars.forEach(bar => bar.style.animationPlayState = 'paused');
+        });
+
+        // Initialize waveform animation state
+        waveBars.forEach(bar => bar.style.animationPlayState = 'paused');
+
+        // Card carousel functionality
+        let currentIndex = 1;
+        const cards = document.querySelectorAll('.info-card');
+        const dots = document.querySelectorAll('.dot');
+        const carousel = document.getElementById('cardsCarousel');
+
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        let dragThreshold = 100;
+
+        function updateCarousel() {
+            cards.forEach((card, index) => {
+                card.classList.remove('left', 'center', 'right');
+                
+                if (index === currentIndex) {
+                    card.classList.add('center');
+                } else if (index === (currentIndex - 1 + cards.length) % cards.length) {
+                    card.classList.add('left');
+                } else if (index === (currentIndex + 1) % cards.length) {
+                    card.classList.add('right');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function flipCard(index) {
+            if (isDragging) return;
+            const card = cards[index];
+            if (card.classList.contains('center')) {
+                const cardInner = card.querySelector('.card-inner');
+                const currentTransform = cardInner.style.transform;
+                
+                if (currentTransform.includes('rotateY(180deg)')) {
+                    cardInner.style.transform = 'rotateY(0deg)';
+                } else {
+                    cardInner.style.transform = 'rotateY(180deg)';
+                }
+            }
+        }
+
+        function changeCard(direction) {
+            cards.forEach(card => {
+                const cardInner = card.querySelector('.card-inner');
+                cardInner.style.transform = 'rotateY(0deg)';
+            });
+            
+            currentIndex = (currentIndex + direction + cards.length) % cards.length;
+            updateCarousel();
+        }
+
+        function goToCard(index) {
+            cards.forEach(card => {
+                const cardInner = card.querySelector('.card-inner');
+                cardInner.style.transform = 'rotateY(0deg)';
+            });
+            
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        function handleStart(e) {
+            isDragging = false;
+            startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            currentX = startX;
+        }
+
+        function handleMove(e) {
+            if (startX === 0) return;
+            
+            currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const diff = currentX - startX;
+            
+            if (Math.abs(diff) > 10) {
+                isDragging = true;
+            }
+        }
+
+        function handleEnd(e) {
+            if (!isDragging) return;
+            
+            const diff = currentX - startX;
+            
+            if (Math.abs(diff) > dragThreshold) {
+                if (diff > 0) {
+                    changeCard(-1);
+                } else {
+                    changeCard(1);
+                }
+            }
+            
+            startX = 0;
+            currentX = 0;
+            isDragging = false;
+        }
+
+        carousel.addEventListener('mousedown', handleStart);
+        carousel.addEventListener('touchstart', handleStart, { passive: true });
+        carousel.addEventListener('mousemove', handleMove);
+        carousel.addEventListener('touchmove', handleMove, { passive: true });
+        carousel.addEventListener('mouseup', handleEnd);
+        carousel.addEventListener('mouseleave', handleEnd);
+        carousel.addEventListener('touchend', handleEnd);
+
+        function initScrollAnimations() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            fadeElements.forEach(element => {
+                gsap.fromTo(element, 
+                    { opacity: 0, y: 30 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: element,
+                            start: "top 85%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+        }
+
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollAnimations();
+            initSmoothScroll();
+            updateCarousel();
+            
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
