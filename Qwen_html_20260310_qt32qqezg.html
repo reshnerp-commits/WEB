@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Privacy Protection - DigitalAware</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --primary-purple: #6B4EE6; --dark-purple: #2D1B69; --pink: #FF6B9D;
+            --light-pink: #FFB3D9; --dark-bg: #1A1A2E; --text-light: #FFFFFF; --text-gray: #B8B8D1;
+        }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', sans-serif; background: var(--dark-bg); color: var(--text-light);
+            overflow-x: hidden; width: 100%; line-height: 1.7;
+        }
+        h1, h2, h3, .logo { font-family: 'Cinzel', serif; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; width: 100%; padding: 15px 40px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--text-light); }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a {
+            color: var(--text-light); text-decoration: none; font-weight: 500; font-size: 14px;
+            letter-spacing: 1px; transition: color 0.3s; position: relative;
+        }
+        .nav-links a:hover { color: var(--pink); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--pink); transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .back-btn {
+            padding: 8px 20px; border: 2px solid var(--pink); border-radius: 5px;
+            color: var(--pink); text-decoration: none; font-weight: 600; font-size: 13px;
+            transition: all 0.3s; display: flex; align-items: center; gap: 5px;
+        }
+        .back-btn:hover { background: var(--pink); color: white; }
+
+        /* Topic Header */
+        .topic-header {
+            min-height: 60vh; min-height: 60dvh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            position: relative; overflow: hidden; padding: 100px 20px 60px; text-align: center;
+        }
+        .topic-header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at center, rgba(107,78,230,0.2) 0%, transparent 70%);
+        }
+        .topic-icon-large {
+            width: 120px; height: 120px; background: linear-gradient(135deg, var(--primary-purple), #4a3b69);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 50px; margin: 0 auto 30px; box-shadow: 0 0 40px rgba(107,78,230,0.6);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(107,78,230,0.5); }
+            50% { box-shadow: 0 0 60px rgba(107,78,230,0.8); }
+        }
+        .topic-header h1 {
+            font-size: clamp(32px, 6vw, 56px); font-weight: 700; margin-bottom: 15px;
+            letter-spacing: 2px; text-shadow: 0 5px 30px rgba(0,0,0,0.3);
+        }
+        .topic-header p {
+            font-size: clamp(14px, 2.5vw, 18px); color: var(--text-light); opacity: 0.9;
+            max-width: 600px; margin: 0 auto;
+        }
+
+        /* Content Section */
+        .topic-content {
+            padding: 80px 20px; max-width: 900px; margin: 0 auto;
+        }
+        .content-section {
+            background: rgba(255,255,255,0.05); border-radius: 20px; padding: 40px;
+            margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .content-section h2 {
+            font-size: 28px; margin-bottom: 20px; color: var(--pink);
+        }
+        .content-section p {
+            font-size: 16px; color: var(--text-gray); margin-bottom: 15px;
+        }
+        .content-section ul {
+            list-style: none; padding-left: 0;
+        }
+        .content-section li {
+            padding: 10px 0 10px 30px; position: relative; color: var(--text-gray);
+        }
+        .content-section li::before {
+            content: '🔐'; position: absolute; left: 0;
+        }
+
+        /* Settings Guide */
+        .settings-guide {
+            background: rgba(107,78,230,0.15); border-radius: 15px; padding: 25px;
+            margin: 20px 0; border: 1px solid rgba(107,78,230,0.3);
+        }
+        .settings-guide h3 { color: var(--text-light); margin-bottom: 15px; }
+        .settings-guide ol { padding-left: 20px; color: var(--text-gray); }
+        .settings-guide li { margin-bottom: 10px; }
+
+        /* Privacy Checklist */
+        .checklist {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 20px;
+        }
+        .checklist-item {
+            display: flex; align-items: flex-start; gap: 10px; padding: 15px;
+            background: rgba(255,255,255,0.05); border-radius: 10px;
+        }
+        .checklist-item input { margin-top: 3px; }
+        .checklist-item label { font-size: 14px; color: var(--text-gray); cursor: pointer; }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center; padding: 60px 20px; background: linear-gradient(to bottom, var(--dark-bg), #16213e);
+        }
+        .cta-section h2 { font-size: 32px; margin-bottom: 20px; }
+        .cta-section p { font-size: 16px; color: var(--text-gray); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .cta-button {
+            display: inline-block; padding: 14px 35px; background: white; color: var(--dark-purple);
+            text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: 2px;
+            border-radius: 5px; transition: all 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px; background: #0f0f1e; text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-links a { color: var(--text-gray); text-decoration: none; transition: color 0.3s; font-size: 14px; }
+        .footer-links a:hover { color: var(--pink); }
+        .copyright { color: var(--text-gray); font-size: 13px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { padding: 12px 20px; }
+            .nav-links { display: none; }
+            .logo { font-size: 20px; }
+            .topic-header { padding: 90px 15px 40px; min-height: 50vh; }
+            .topic-content { padding: 60px 15px; }
+            .content-section { padding: 30px 20px; }
+        }
+        @media (max-width: 480px) {
+            .topic-header h1 { font-size: 28px; }
+            .topic-icon-large { width: 100px; height: 100px; font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">DIGITALAWARE</a>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#learn">Learn</a></li>
+            <li><a href="index.html#listen">Listen</a></li>
+            <li><a href="index.html#about">About</a></li>
+        </ul>
+        <a href="index.html#learn" class="back-btn">← Back</a>
+    </nav>
+
+    <header class="topic-header">
+        <div class="topic-icon-large">🛡️</div>
+        <h1>Privacy Protection</h1>
+        <p>Take control of your personal data and master privacy settings across all your devices</p>
+    </header>
+
+    <main class="topic-content">
+        <section class="content-section fade-in">
+            <h2>Why Privacy Matters</h2>
+            <p>Your personal data is valuable. Companies collect information about your browsing habits, location, contacts, and preferences to build detailed profiles used for advertising, analytics, and sometimes sold to third parties.</p>
+            <p>Protecting your privacy isn't about having something to hide—it's about maintaining control over your digital identity and preventing misuse of your information.</p>
+        </section>
+
+        <section class="content-section fade-in">
+            <h2>Understanding Data Collection</h2>
+            <p>Most apps and websites collect data in these ways:</p>
+            <ul>
+                <li><strong>Cookies & trackers:</strong> Monitor your browsing across sites</li>
+                <li><strong>Location services:</strong> Track your physical movements</li>
+                <li><strong>App permissions:</strong> Access contacts, camera, microphone, files</li>
+                <li><strong>Account data:</strong> Store your profile, activity, and preferences</li>
+                <li><strong>Device info:</strong> Collect hardware details and unique identifiers</li>
+            </ul>
+            <div class="settings-guide">
+                <h3>📱 Quick Privacy Check</h3>
+                <ol>
+                    <li>Review app permissions on your phone (Settings → Privacy)</li>
+                    <li>Check browser privacy settings and clear cookies regularly</li>
+                    <li>Review social media privacy settings (who can see your posts?)</li>
+                    <li>Use private/incognito mode for sensitive browsing</li>
+                    <li>Consider using privacy-focused browsers like Firefox or Brave</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="content-section fade-in">
+            <h2>Essential Privacy Settings</h2>
+            <div class="checklist">
+                <div class="checklist-item">
+                    <input type="checkbox" id="social-privacy">
+                    <label for="social-privacy"><strong>Social Media:</strong> Set profiles to private, limit ad tracking</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="browser-privacy">
+                    <label for="browser-privacy"><strong>Browser:</strong> Enable Do Not Track, block third-party cookies</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="location-privacy">
+                    <label for="location-privacy"><strong>Location:</strong> Disable location access for non-essential apps</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="voice-privacy">
+                    <label for="voice-privacy"><strong>Voice Assistants:</strong> Review and delete voice history regularly</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="ads-privacy">
+                    <label for="ads-privacy"><strong>Ad Preferences:</strong> Opt out of personalized advertising</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="data-download">
+                    <label for="data-download"><strong>Data Download:</strong> Request your data from major platforms</label>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section fade-in">
+            <h2>Advanced Privacy Tools</h2>
+            <p>For enhanced protection, consider these tools:</p>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h3>🔒 VPN Services</h3>
+                    <p>Encrypt your internet connection and hide your IP address from websites and ISPs.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🧹 Privacy Browsers</h3>
+                    <p>Use browsers like Tor, Firefox with privacy extensions, or Brave for built-in tracking protection.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>📧 Secure Email</h3>
+                    <p>Switch to encrypted email services like ProtonMail or Tutanota for sensitive communications.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🔍 Search Privately</h3>
+                    <p>Use privacy-focused search engines like DuckDuckGo that don't track your searches.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section fade-in">
+            <h2>Privacy Best Practices</h2>
+            <ul>
+                <li><strong>Think before you share:</strong> Once posted online, content can be copied and shared beyond your control</li>
+                <li><strong>Use strong, unique passwords:</strong> Prevent unauthorized access to your accounts</li>
+                <li><strong>Enable two-factor authentication:</strong> Add an extra layer of security to important accounts</li>
+                <li><strong>Regularly audit connected apps:</strong> Remove apps you no longer use that have access to your data</li>
+                <li><strong>Be cautious with public Wi-Fi:</strong> Avoid accessing sensitive accounts on unsecured networks</li>
+                <li><strong>Read privacy policies:</strong> Understand what data services collect and how they use it</li>
+            </ul>
+        </section>
+    </main>
+
+    <section class="cta-section">
+        <h2>Take Control of Your Privacy Today</h2>
+        <p>Small changes to your settings and habits can significantly improve your digital privacy.</p>
+        <a href="index.html#learn" class="cta-button">Return to Learning Hub</a>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html#home">Home</a>
+            <a href="index.html#learn">Learn</a>
+            <a href="index.html#listen">Listen</a>
+            <a href="index.html#about">About</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+        <p class="copyright">© 2024 DigitalAware. All rights reserved. Empowering Digital Citizens.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
